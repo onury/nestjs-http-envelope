@@ -156,8 +156,8 @@ export class ItemsController {}
 
 ## Related Projects
 
-- [**nestjs-accesscontrol**](https://github.com/onury/nestjs-accesscontrol) — The official NestJS integration for AccessControl v3: RBAC + ABAC with fluent CRUD decorators and attribute filtering.
-- [**nestjs-configuard**](https://github.com/onury/nestjs-configuard) — The NestJS integration for configuard: DB-backed, typed, ABAC-filtered runtime config with live reload.
+- [**nestjs-accesscontrol**](https://github.com/onury/nestjs-accesscontrol) — The official NestJS integration for [AccessControl v3](https://github.com/onury/accesscontrol): RBAC + ABAC with fluent CRUD decorators and attribute filtering.
+- [**nestjs-configuard**](https://github.com/onury/nestjs-configuard) — The NestJS integration for [configuard](https://github.com/onury/configuard): DB-backed, typed, ABAC-filtered runtime config with live reload.
 - [**accesscontrol**](https://github.com/onury/accesscontrol) — Role & attribute-based access control (RBAC + ABAC) for Node.js.
 - [**configuard**](https://github.com/onury/configuard) — Turn flat config rows from a database table into a nested, typed configuration object — with `${...}` templating and accessor-based (ABAC) filtering.
 - [**notation**](https://github.com/onury/notation) — Read, modify, and filter the contents of objects and arrays via dot/bracket notation strings or glob patterns.
