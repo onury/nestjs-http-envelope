@@ -131,10 +131,35 @@ export class ItemsController {}
 
 ## API
 
-`HttpEnvelopeModule` · `ResponseEnvelopeInterceptor` · `AllExceptionsFilter` ·
-`EnvelopeBody` · `SkipEnvelope` / `SKIP_ENVELOPE_KEY` · `HTTP_ENVELOPE_OPTIONS` token ·
-`resolveOptions` · types `HttpEnvelopeOptions`, `ResolvedHttpEnvelopeOptions`,
-`EnvelopeFieldNames`, `ResponseEnvelope`, `ErrorEnvelope`.
+**Module**
+
+| Export | Description |
+|--------|-------------|
+| `HttpEnvelopeModule.forRoot(options?)` | Registers the interceptor + filter globally (`APP_INTERCEPTOR`/`APP_FILTER`). See [Configuration](#configuration). |
+
+**Building blocks**
+
+| Export | Description |
+|--------|-------------|
+| `ResponseEnvelopeInterceptor` | Wraps successful responses in the success envelope. Exported for per-route `@UseInterceptors`. |
+| `AllExceptionsFilter` | Formats thrown exceptions into the error envelope. Exported for per-route `@UseFilters`. |
+| `EnvelopeBody` | Return `new EnvelopeBody(data, extras)` from a handler to hoist `extras` (e.g. `pagination`) beside `data`. |
+
+**Opt-out**
+
+| Export | Description |
+|--------|-------------|
+| `@SkipEnvelope()` | Marks a route/controller as exempt — its return value is sent as-is. |
+| `SKIP_ENVELOPE_KEY` | The metadata key `@SkipEnvelope()` sets (for custom reflection). |
+
+**Advanced & types**
+
+| Export | Description |
+|--------|-------------|
+| `HTTP_ENVELOPE_OPTIONS` | DI token holding the resolved options (inject for custom wiring). |
+| `resolveOptions(options?)` | Merge partial options over the defaults → `ResolvedHttpEnvelopeOptions`. |
+| `HttpEnvelopeOptions`, `ResolvedHttpEnvelopeOptions`, `EnvelopeFieldNames` | Option types. |
+| `ResponseEnvelope<T>`, `ErrorEnvelope` | The default success / error envelope shapes. |
 
 ## Related Projects
 
