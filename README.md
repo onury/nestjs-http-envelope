@@ -12,7 +12,7 @@
 
 A uniform **response & error envelope** for [NestJS](https://nestjs.com): one success shape, one error shape, attribute hoisting for pagination, and an opt-out — all configurable, registered with a single `forRoot()`.
 
-> **ESM-only.** Requires Node ≥ 20 and NestJS 10 / 11.
+> **[ESM](https://gist.github.com/onury/d3f3d765d7db2e8b2d050d14315f2ac7)-only.** Requires Node ≥ 20 and NestJS 10 / 11.
 
 ```jsonc
 // success
