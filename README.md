@@ -10,9 +10,7 @@
   <a href="https://github.com/onury/nestjs-http-envelope/blob/main/LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue?style=flat" alt="license" /></a>
 </p>
 
-A uniform **response & error envelope** for [NestJS](https://nestjs.com): one success
-shape, one error shape, attribute hoisting for pagination, and an opt-out — all
-configurable, registered with a single `forRoot()`.
+A uniform **response & error envelope** for [NestJS](https://nestjs.com): one success shape, one error shape, attribute hoisting for pagination, and an opt-out — all configurable, registered with a single `forRoot()`.
 
 > **ESM-only.** Requires Node ≥ 20 and NestJS 10 / 11.
 
@@ -31,13 +29,11 @@ configurable, registered with a single `forRoot()`.
 npm install nestjs-http-envelope
 ```
 
-`@nestjs/common`, `@nestjs/core`, `reflect-metadata`, and `rxjs` are peer dependencies
-(already present in any Nest app).
+`@nestjs/common`, `@nestjs/core`, `reflect-metadata`, and `rxjs` are peer dependencies (already present in any Nest app).
 
 ## Quick start
 
-Register once — the interceptor (success) and the all-exceptions filter (error) are
-wired globally for you:
+Register once — the interceptor (success) and the all-exceptions filter (error) are wired globally for you:
 
 ```ts
 import { Module } from '@nestjs/common';
@@ -58,8 +54,7 @@ findOne(@Param('id') id: string) {
 }
 ```
 
-**Pagination / extra top-level fields** — return an `EnvelopeBody`; its `extras` are
-hoisted as siblings of `data`:
+**Pagination / extra top-level fields** — return an `EnvelopeBody`; its `extras` are hoisted as siblings of `data`:
 
 ```ts
 import { EnvelopeBody } from 'nestjs-http-envelope';
@@ -83,8 +78,7 @@ health() {
 }
 ```
 
-**Errors** are formatted automatically — `HttpException`s keep their status/message;
-anything else becomes a logged generic 500 with no internal details leaked.
+**Errors** are formatted automatically — `HttpException`s keep their status/message; anything else becomes a logged generic 500 with no internal details leaked.
 
 ## Configuration
 
@@ -104,7 +98,7 @@ HttpEnvelopeModule.forRoot({
 ```
 
 | Option | Default | Description |
-|--------|---------|-------------|
+| --- | --- | --- |
 | `timestamp` | `() => new Date().toISOString()` | Produces the `timestamp` value |
 | `fields` | standard names | Rename any of `statusCode`/`timestamp`/`data`/`error`/`message` |
 | `logger` | NestJS `Logger` | Logger for unhandled (non-HTTP) exceptions |
@@ -116,8 +110,7 @@ HttpEnvelopeModule.forRoot({
 
 ## Per-route use
 
-Both the interceptor and filter are also exported, so you can apply them per-route
-instead of globally:
+Both the interceptor and filter are also exported, so you can apply them per-route instead of globally:
 
 ```ts
 import { UseInterceptors, UseFilters } from '@nestjs/common';
@@ -134,13 +127,13 @@ export class ItemsController {}
 **Module**
 
 | Export | Description |
-|--------|-------------|
+| --- | --- |
 | `HttpEnvelopeModule.forRoot(options?)` | Registers the interceptor + filter globally (`APP_INTERCEPTOR`/`APP_FILTER`). See [Configuration](#configuration). |
 
 **Building blocks**
 
 | Export | Description |
-|--------|-------------|
+| --- | --- |
 | `ResponseEnvelopeInterceptor` | Wraps successful responses in the success envelope. Exported for per-route `@UseInterceptors`. |
 | `AllExceptionsFilter` | Formats thrown exceptions into the error envelope. Exported for per-route `@UseFilters`. |
 | `EnvelopeBody` | Return `new EnvelopeBody(data, extras)` from a handler to hoist `extras` (e.g. `pagination`) beside `data`. |
@@ -148,14 +141,14 @@ export class ItemsController {}
 **Opt-out**
 
 | Export | Description |
-|--------|-------------|
+| --- | --- |
 | `@SkipEnvelope()` | Marks a route/controller as exempt — its return value is sent as-is. |
 | `SKIP_ENVELOPE_KEY` | The metadata key `@SkipEnvelope()` sets (for custom reflection). |
 
 **Advanced & types**
 
 | Export | Description |
-|--------|-------------|
+| --- | --- |
 | `HTTP_ENVELOPE_OPTIONS` | DI token holding the resolved options (inject for custom wiring). |
 | `resolveOptions(options?)` | Merge partial options over the defaults → `ResolvedHttpEnvelopeOptions`. |
 | `HttpEnvelopeOptions`, `ResolvedHttpEnvelopeOptions`, `EnvelopeFieldNames` | Option types. |
