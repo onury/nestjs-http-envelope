@@ -67,6 +67,8 @@ list(@Query() q: ListDto) {
 }
 ```
 
+`EnvelopeBody` survives other interceptors that rework the payload. Under `Symbol.for('nestjs-http-envelope:map-data')` (exported as `ENVELOPE_MAP_DATA`) it carries a method that takes a mapper and returns a new body of the same class around the mapped `data`, with `extras` untouched. An interceptor that calls it, instead of transforming the body object itself, hands back a body the envelope still recognizes. [nestjs-accesscontrol](https://github.com/onury/nestjs-accesscontrol)'s `@FilterResponse()` (v1.0.2 or later) does this, so filtered pagination responses keep their shape. Neither package depends on the other; the symbol is the whole contract.
+
 **Opt out** for bare endpoints (e.g. health checks) with `@SkipEnvelope()`:
 
 ```ts
@@ -138,6 +140,7 @@ export class ItemsController {}
 | `ResponseEnvelopeInterceptor` | Wraps successful responses in the success envelope. Exported for per-route `@UseInterceptors`. |
 | `AllExceptionsFilter` | Formats thrown exceptions into the error envelope. Exported for per-route `@UseFilters`. |
 | `EnvelopeBody` | Return `new EnvelopeBody(data, extras)` from a handler to hoist `extras` (e.g. `pagination`) beside `data`. |
+| `ENVELOPE_MAP_DATA` | `Symbol.for('nestjs-http-envelope:map-data')`: the key of `EnvelopeBody`'s map-data method, for interceptors that transform `data` and must keep the body intact. |
 
 **Opt-out**
 
