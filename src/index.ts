@@ -1,5 +1,5 @@
 export { AllExceptionsFilter } from './all-exceptions.filter';
-export { EnvelopeBody } from './envelope-body';
+export { ENVELOPE_MAP_DATA, EnvelopeBody } from './envelope-body';
 export { HttpEnvelopeModule } from './http-envelope.module';
 export {
   type EnvelopeFieldNames,
