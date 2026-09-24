@@ -1,6 +1,6 @@
 {
   "name": "nestjs-http-envelope",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "A uniform response & error envelope for NestJS — success/error interceptor + all-exceptions filter, attribute-hoisting (pagination), and @SkipEnvelope, all configurable.",
   "type": "module",
   "license": "MIT",
