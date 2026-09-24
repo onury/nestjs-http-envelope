@@ -69,7 +69,7 @@ list(@Query() q: ListDto) {
 
 `EnvelopeBody` survives other interceptors that rework the payload. Under `Symbol.for('nestjs-http-envelope:map-data')` (exported as `ENVELOPE_MAP_DATA`) it carries a method that takes a mapper and returns a new body of the same class around the mapped `data`, with `extras` untouched. An interceptor that calls it, instead of transforming the body object itself, hands back a body the envelope still recognizes. [nestjs-accesscontrol](https://github.com/onury/nestjs-accesscontrol)'s `@FilterResponse()` (v1.0.2 or later) does this, so filtered pagination responses keep their shape. Neither package depends on the other; the symbol is the whole contract.
 
-**Opt out** for bare endpoints (e.g. health checks) with `@SkipEnvelope()`:
+**Opt out** for endpoints with a contract of their own (e.g. health checks, OAuth2 token routes) with `@SkipEnvelope()` on the route or the controller. It covers both directions:
 
 ```ts
 import { SkipEnvelope } from 'nestjs-http-envelope';
@@ -79,7 +79,18 @@ import { SkipEnvelope } from 'nestjs-http-envelope';
 health() {
   return { status: 'ok' }; // sent as-is
 }
+
+@SkipEnvelope()
+@Post('token')
+token() {
+  // sent as-is too: 400 { "error": "invalid_grant", "error_description": "…" }
+  throw new HttpException({ error: 'invalid_grant', error_description: '…' }, 400);
+}
 ```
+
+An `HttpException` thrown on a skipped route, whether from a guard, a pipe or the handler, goes out with its own status and body, the way Nest's default filter would send it (a string body becomes `{ statusCode, message }`). Anything else still becomes the logged generic 500 below; it has no body of its own worth sending. `@SkipEnvelope()` does this by attaching a route-scoped exception filter, so on that route it takes precedence over global filters.
+
+_Note: before v1.0.2, `@SkipEnvelope()` skipped the success envelope only; errors on a skipped route were still enveloped._
 
 **Errors** are formatted automatically — `HttpException`s keep their status/message; anything else becomes a logged generic 500 with no internal details leaked.
 
@@ -146,7 +157,7 @@ export class ItemsController {}
 
 | Export | Description |
 | --- | --- |
-| `@SkipEnvelope()` | Marks a route/controller as exempt — its return value is sent as-is. |
+| `@SkipEnvelope()` | Marks a route/controller as exempt. Its return value is sent as-is, and an `HttpException` it throws keeps its own status and body. |
 | `SKIP_ENVELOPE_KEY` | The metadata key `@SkipEnvelope()` sets (for custom reflection). |
 
 **Advanced & types**
